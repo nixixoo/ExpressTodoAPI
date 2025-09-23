@@ -18,6 +18,11 @@ const taskSchema = new moongose.Schema({
         type: String,
         enum: ['low', 'medium', 'high'],
         default: 'medium'
+    },
+    user: {
+        type: moongose.Schema.ObjectId,
+        ref: 'User',
+        required: true
     }
 }, {
     timestamps: true // Agrega createdAt y updatedAt automáticamente

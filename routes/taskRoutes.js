@@ -12,17 +12,18 @@ const {
     validateUpdateTask,
     handleValidationErrors
 } = require('../middleware/taskValidation')
+const { protect } = require('../middleware/authMiddleware')
 
 // GET /api/tasks - Obtener todas las tareas
-router.get('/', getAllTasks);
+router.get('/', protect, getAllTasks);
 
 // POST /api/tasks - Crear nueva tarea
-router.post('/', validateCreateTask, handleValidationErrors, createTask);
+router.post('/', protect, validateCreateTask, handleValidationErrors, createTask);
 
 // PUT /api/tasks/:id - Actualizar tarea específica
-router.put('/:id', validateUpdateTask, handleValidationErrors, updateTask);
+router.put('/:id', protect, validateUpdateTask, handleValidationErrors, updateTask);
 
 // DELETE /api/tasks/:id - Eliminar tarea específica
-router.delete('/:id', deleteTask);
+router.delete('/:id', protect, deleteTask);
 
 module.exports = router;

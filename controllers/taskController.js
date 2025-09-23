@@ -6,7 +6,7 @@ const getAllTasks = asyncHandler(async (req, res) => {
     const { completed, priority, search, page = 1, limit = 10 } = req.query
 
     // Construir objeto de filtrado dinamicamente
-    let filters = {}
+    let filters = { user: req.user._id }
 
     // Filtro por estado completado
     if (completed !== undefined)  {
@@ -50,27 +50,43 @@ const getAllTasks = asyncHandler(async (req, res) => {
 })
 // POST /api/tasks - Crear nueva tarea
 const createTask = asyncHandler(async (req, res) => {
-    const task = new Task(req.body)
+    const task = new Task({
+        ...req.body,
+        user: req.user._id
+    })
     await task.save()
     res.status(201).json(task)
 })
 
 // PUT /api/tasks/:id - Actualizar tarea
 const updateTask = asyncHandler(async (req, res) => {
-    const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const task = await Task.findOne({ _id: req.params.id, user: req.user._id })
     if (!task) {
-        return res.status(404).json({ message: 'Tarea no encontrada' })
+        return res.status(404).json({ 
+            success: false,
+            message: 'Tarea no encontrada o no tienes permisos' 
+        })
     }
-    res.json(task)
+    const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    res.json(updatedTask)
 })
 
 // DELETE /api/tasks/:id - Eliminar tarea
 const deleteTask = asyncHandler(async (req, res) => {
-    const task = await Task.findByIdAndDelete(req.params.id)
+    const task = await Task.findOne({ _id: req.params.id, user: req.user._id })
     if (!task) {
-        return res.status(404).json({ message: 'Tarea no encontrada' })
+        return res.status(404).json({ 
+            success: false,
+            message: 'Tarea no encontrada o no tienes permisos' 
+        })
     }
-    res.json({ message: 'Tarea eliminada' })
+    
+    await Task.findByIdAndDelete(req.params.id)
+    
+    res.json({ 
+        success: true,
+        message: 'Tarea eliminada correctamente' 
+    })
 })
 
 module.exports = {

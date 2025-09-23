@@ -23,12 +23,14 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Importar rutas
 const taskRoutes = require('./routes/taskRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Importar middlewares de error
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 // Usar las rutas
 app.use('/api/tasks', taskRoutes);
+app.use('/api/auth', authRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
