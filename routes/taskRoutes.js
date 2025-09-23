@@ -1,18 +1,18 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 const {
     getAllTasks,
     createTask,
     updateTask,
     deleteTask
-} = require('../controllers/taskController')
+} = require('../controllers/taskController');
 
 const {
     validateCreateTask,
     validateUpdateTask,
     handleValidationErrors
-} = require('../middleware/taskValidation')
-const { protect } = require('../middleware/authMiddleware')
+} = require('../middleware/taskValidation');
+const { protect } = require('../middleware/authMiddleware');
 
 // GET /api/tasks - Obtener todas las tareas
 router.get('/', protect, getAllTasks);

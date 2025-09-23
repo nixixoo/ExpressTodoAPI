@@ -34,16 +34,16 @@ const userSchema = new mongoose.Schema(
 //Middleware para hashear contraseña antes de guardar
 userSchema.pre('save', async function(next){
     // Solo hashear si la constraseña fue modificada
-    if (!this.isModified('password')) return next()
+    if (!this.isModified('password')) return next();
     
     // Hashear contraseña
-    this.password = await bcrypt.hash(this.password, 12)
-    next()
-})
+    this.password = await bcrypt.hash(this.password, 12);
+    next();
+});
 
 //Metodo para comparar contraseñas
 userSchema.methods.comparePassword = async function(CandidatePassword){
-    return await bcrypt.compare(CandidatePassword, this.password)
-}
+    return await bcrypt.compare(CandidatePassword, this.password);
+};
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User', userSchema);
