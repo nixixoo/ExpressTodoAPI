@@ -7,14 +7,20 @@ const {
     deleteTask
 } = require('../controllers/taskController')
 
+const {
+    validateCreateTask,
+    validateUpdateTask,
+    handleValidationErrors
+} = require('../middleware/taskValidation')
+
 // GET /api/tasks - Obtener todas las tareas
 router.get('/', getAllTasks);
 
 // POST /api/tasks - Crear nueva tarea
-router.post('/', createTask);
+router.post('/', validateCreateTask, handleValidationErrors, createTask);
 
 // PUT /api/tasks/:id - Actualizar tarea específica
-router.put('/:id', updateTask);
+router.put('/:id', validateUpdateTask, handleValidationErrors, updateTask);
 
 // DELETE /api/tasks/:id - Eliminar tarea específica
 router.delete('/:id', deleteTask);

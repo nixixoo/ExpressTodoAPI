@@ -8,7 +8,7 @@ const taskSchema = new moongose.Schema({
     },
     description: {
         type: String,
-        default: ''
+        default: '' 
     },
     completed: {
         type: Boolean,
