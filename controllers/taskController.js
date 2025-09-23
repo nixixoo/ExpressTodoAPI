@@ -3,10 +3,36 @@ const asyncHandler = require('../middleware/asyncHandler')
 
 // GET /api/tasks - Obtener todas las tareas
 const getAllTasks = asyncHandler(async (req, res) => {
-    const tasks = await Task.find()
-    res.json(tasks)
-})
+    const { completed, priority, search } = req.query
 
+    // Construir objeto de filtrado dinamicamente
+    let filters = {}
+
+    // Filtro por estado completado
+    if (completed !== undefined)  {
+        filters.completed = completed === 'true'
+    }
+
+    // Filtro por prioridad
+    if (priority) {
+        filters.priority = priority
+    }
+
+    if (search) {
+        filters.$or = [
+            { title: {$regex: search, $options: 'i'} },
+            { description: { $regex: search, $options: 'i' } }
+        ]
+    }
+
+    const tasks = await Task.find(filters)
+
+    res.json({
+        success: true,
+        count: tasks.length,
+        data: tasks
+    })
+})
 // POST /api/tasks - Crear nueva tarea
 const createTask = asyncHandler(async (req, res) => {
     const task = new Task(req.body)
