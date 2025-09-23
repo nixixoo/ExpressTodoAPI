@@ -3,7 +3,7 @@ const asyncHandler = require('../middleware/asyncHandler')
 
 // GET /api/tasks - Obtener todas las tareas
 const getAllTasks = asyncHandler(async (req, res) => {
-    const { completed, priority, search } = req.query
+    const { completed, priority, search, page = 1, limit = 10 } = req.query
 
     // Construir objeto de filtrado dinamicamente
     let filters = {}
@@ -25,10 +25,25 @@ const getAllTasks = asyncHandler(async (req, res) => {
         ]
     }
 
+    // Convertir números y aplicar filtros
+    const pageNum = parseInt(page)
+    const limitNum = parseInt(limit) > 50 ? 50 : parseInt(limit)
+    const skip = (pageNum - 1) * limitNum
+
+    // Consulta a la base de datos
     const tasks = await Task.find(filters)
+    .skip(skip)
+    .limit(limitNum)
+    .sort({ createdAt: -1 })
+
+    const total = await Task.countDocuments(filters)
 
     res.json({
         success: true,
+        page: pageNum,
+        limit: limitNum,
+        total,
+        pages: Math.ceil(total / limitNum),
         count: tasks.length,
         data: tasks
     })
