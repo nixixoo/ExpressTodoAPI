@@ -24,6 +24,9 @@ mongoose.connect(process.env.MONGODB_URI)
 // Importar rutas
 const taskRoutes = require('./routes/taskRoutes');
 
+// Importar middlewares de error
+const { errorHandler, notFound } = require('./middleware/errorHandler');
+
 // Usar las rutas
 app.use('/api/tasks', taskRoutes);
 
@@ -31,3 +34,6 @@ app.use('/api/tasks', taskRoutes);
 app.get('/', (req, res) => {
   res.json({ mensaje: '¡Hola desde tu API de tareas!' });
 });
+
+app.use(notFound)
+app.use(errorHandler)
