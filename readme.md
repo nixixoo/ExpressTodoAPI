@@ -1,73 +1,73 @@
-    # TODO API - Express.js & MongoDB
+# TODO API - Express.js & MongoDB
 
-Una API REST completa para gestión de tareas construida con Express.js, MongoDB y autenticación JWT.
+A complete REST API for task management built with Express.js, MongoDB, and JWT authentication.
 
-## Características
+## Features
 
-- ✅ **CRUD completo** de tareas
-- ✅ **Autenticación JWT** con registro y login
-- ✅ **Autorización** por usuario (cada usuario ve solo sus tareas)
-- ✅ **Validaciones robustas** con express-validator
-- ✅ **Filtros y búsquedas** avanzadas
-- ✅ **Paginación** para listas grandes
-- ✅ **Manejo de errores centralizado**
-- ✅ **Seguridad** con bcrypt para contraseñas
+- ✅ **Complete CRUD** operations for tasks
+- ✅ **JWT Authentication** with registration and login
+- ✅ **User Authorization** (each user sees only their tasks)
+- ✅ **Robust Validations** with express-validator
+- ✅ **Advanced Filtering & Search** capabilities
+- ✅ **Pagination** for large datasets
+- ✅ **Centralized Error Handling**
+- ✅ **Security** with bcrypt password hashing
 
-## Tecnologías
+## Technologies
 
 - **Backend:** Express.js
-- **Base de datos:** MongoDB con Mongoose
-- **Autenticación:** JWT (jsonwebtoken)
-- **Validaciones:** express-validator
-- **Seguridad:** bcryptjs, CORS
-- **Variables de entorno:** dotenv
+- **Database:** MongoDB with Mongoose
+- **Authentication:** JWT (jsonwebtoken)
+- **Validations:** express-validator
+- **Security:** bcryptjs, CORS
+- **Environment Variables:** dotenv
 
-## Instalación
+## Installation
 
 ```bash
-# Clonar repositorio
-git clone https://github.com/tu-usuario/todo-api-express.git
+# Clone repository
+git clone https://github.com/your-username/todo-api-express.git
 cd todo-api-express
 
-# Instalar dependencias
+# Install dependencies
 npm install
 
-# Configurar variables de entorno
+# Configure environment variables
 cp .env.example .env
-# Editar .env con tus configuraciones
+# Edit .env with your configurations
 
-# Ejecutar en desarrollo
+# Run in development
 npm start
 ```
 
-## Variables de Entorno
+## Environment Variables
 
 ```env
 MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/todo-app
-JWT_SECRET=tu_clave_secreta_super_segura
+JWT_SECRET=your_super_secret_jwt_key
 PORT=3000
 ```
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 todo-api/
-├── controllers/          # Lógica de controladores
-├── middleware/          # Middlewares personalizados
-├── models/             # Modelos de Mongoose
-├── routes/             # Definición de rutas
-├── .env               # Variables de entorno
-├── server.js          # Punto de entrada
+├── controllers/          # Controller logic
+├── middleware/          # Custom middlewares
+├── models/             # Mongoose models
+├── routes/             # Route definitions
+├── .env               # Environment variables
+├── server.js          # Entry point
 └── package.json
 ```
 
 ---
 
-## Endpoints de la API
+## API Endpoints
 
-### Autenticación
+### Authentication
 
-#### Registrar Usuario
+#### Register User
 ```http
 POST /api/auth/register
 ```
@@ -75,28 +75,28 @@ POST /api/auth/register
 **Body:**
 ```json
 {
-  "name": "Juan Pérez",
-  "email": "juan@example.com",
+  "name": "John Doe",
+  "email": "john@example.com",
   "password": "123456"
 }
 ```
 
-**Respuesta:**
+**Response:**
 ```json
 {
   "success": true,
-  "message": "Usuario registrado exitosamente",
+  "message": "User registered successfully",
   "data": {
     "id": "64abc123...",
-    "name": "Juan Pérez",
-    "email": "juan@example.com",
+    "name": "John Doe",
+    "email": "john@example.com",
     "role": "user"
   },
   "token": "eyJhbGciOiJIUzI1NiIs..."
 }
 ```
 
-#### Iniciar Sesión
+#### Login
 ```http
 POST /api/auth/login
 ```
@@ -104,39 +104,39 @@ POST /api/auth/login
 **Body:**
 ```json
 {
-  "email": "juan@example.com",
+  "email": "john@example.com",
   "password": "123456"
 }
 ```
 
-**Respuesta:** Igual al registro
+**Response:** Same as registration
 
 ---
 
-### Tareas (Requieren Autenticación)
+### Tasks (Authentication Required)
 
-> **Nota:** Todas las rutas de tareas requieren el header `Authorization: Bearer <token>`
+> **Note:** All task routes require the `Authorization: Bearer <token>` header
 
-#### Listar Tareas
+#### List Tasks
 ```http
 GET /api/tasks
 ```
 
 **Query Parameters:**
-- `page` (opcional): Número de página (default: 1)
-- `limit` (opcional): Tareas por página (default: 10, máximo: 50)
-- `completed` (opcional): true/false
-- `priority` (opcional): low/medium/high
-- `search` (opcional): Buscar en título y descripción
+- `page` (optional): Page number (default: 1)
+- `limit` (optional): Tasks per page (default: 10, max: 50)
+- `completed` (optional): true/false
+- `priority` (optional): low/medium/high
+- `search` (optional): Search in title and description
 
-**Ejemplos:**
+**Examples:**
 ```http
 GET /api/tasks?page=1&limit=5
 GET /api/tasks?completed=true&priority=high
-GET /api/tasks?search=comprar&page=2
+GET /api/tasks?search=shopping&page=2
 ```
 
-**Respuesta:**
+**Response:**
 ```json
 {
   "success": true,
@@ -148,8 +148,8 @@ GET /api/tasks?search=comprar&page=2
   "data": [
     {
       "_id": "64abc123...",
-      "title": "Comprar leche",
-      "description": "Ir al supermercado",
+      "title": "Buy milk",
+      "description": "Go to the supermarket",
       "completed": false,
       "priority": "medium",
       "user": "64user123...",
@@ -160,7 +160,7 @@ GET /api/tasks?search=comprar&page=2
 }
 ```
 
-#### Crear Tarea
+#### Create Task
 ```http
 POST /api/tasks
 ```
@@ -168,20 +168,20 @@ POST /api/tasks
 **Body:**
 ```json
 {
-  "title": "Nueva tarea",
-  "description": "Descripción opcional",
+  "title": "New task",
+  "description": "Optional description",
   "priority": "high"
 }
 ```
 
-**Respuesta:**
+**Response:**
 ```json
 {
   "success": true,
   "data": {
     "_id": "64abc123...",
-    "title": "Nueva tarea",
-    "description": "Descripción opcional",
+    "title": "New task",
+    "description": "Optional description",
     "completed": false,
     "priority": "high",
     "user": "64user123...",
@@ -191,111 +191,111 @@ POST /api/tasks
 }
 ```
 
-#### Actualizar Tarea
+#### Update Task
 ```http
 PUT /api/tasks/:id
 ```
 
-**Body:** (todos los campos son opcionales)
+**Body:** (all fields are optional)
 ```json
 {
-  "title": "Tarea actualizada",
+  "title": "Updated task",
   "completed": true,
   "priority": "low"
 }
 ```
 
-#### Eliminar Tarea
+#### Delete Task
 ```http
 DELETE /api/tasks/:id
 ```
 
-**Respuesta:**
+**Response:**
 ```json
 {
   "success": true,
-  "message": "Tarea eliminada correctamente"
+  "message": "Task deleted successfully"
 }
 ```
 
 ---
 
-## Validaciones
+## Validations
 
-### Usuario
-- **name:** Requerido
-- **email:** Requerido, formato email válido, único
-- **password:** Requerido, mínimo 6 caracteres
+### User
+- **name:** Required
+- **email:** Required, valid email format, unique
+- **password:** Required, minimum 6 characters
 
-### Tarea
-- **title:** Requerido, 1-100 caracteres
-- **description:** Opcional, máximo 500 caracteres
-- **priority:** Opcional, valores: "low", "medium", "high"
-- **completed:** Opcional, boolean
+### Task
+- **title:** Required, 1-100 characters
+- **description:** Optional, maximum 500 characters
+- **priority:** Optional, values: "low", "medium", "high"
+- **completed:** Optional, boolean
 
 ---
 
-## Códigos de Estado HTTP
+## HTTP Status Codes
 
 - `200` - OK
-- `201` - Creado
-- `400` - Datos inválidos
-- `401` - No autorizado
-- `403` - Prohibido
-- `404` - No encontrado
-- `500` - Error del servidor
+- `201` - Created
+- `400` - Bad Request
+- `401` - Unauthorized
+- `403` - Forbidden
+- `404` - Not Found
+- `500` - Internal Server Error
 
 ---
 
-## Ejemplos de Uso
+## Usage Examples
 
-### 1. Registro y Login
+### 1. Registration and Login
 ```bash
-# Registrar usuario
+# Register user
 curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
-  -d '{"name":"Juan","email":"juan@test.com","password":"123456"}'
+  -d '{"name":"John","email":"john@test.com","password":"123456"}'
 
-# Guardar el token de la respuesta
+# Save the token from response
 TOKEN="eyJhbGciOiJIUzI1NiIs..."
 ```
 
-### 2. Crear y Gestionar Tareas
+### 2. Creating and Managing Tasks
 ```bash
-# Crear tarea
+# Create task
 curl -X POST http://localhost:3000/api/tasks \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"title":"Comprar leche","priority":"high"}'
+  -d '{"title":"Buy milk","priority":"high"}'
 
-# Listar tareas
+# List tasks
 curl -X GET http://localhost:3000/api/tasks \
   -H "Authorization: Bearer $TOKEN"
 
-# Buscar tareas completadas
+# Search completed tasks
 curl -X GET "http://localhost:3000/api/tasks?completed=true" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ---
 
-## Seguridad
+## Security
 
-- **Contraseñas hasheadas** con bcrypt (costo 12)
-- **JWT tokens** con expiración de 30 días
-- **Validación de entrada** en todos los endpoints
-- **Autorización por usuario** (cada usuario ve solo sus tareas)
-- **CORS configurado** para requests cross-origin
+- **Password hashing** with bcrypt (cost 12)
+- **JWT tokens** with 30-day expiration
+- **Input validation** on all endpoints
+- **User-scoped authorization** (users see only their tasks)
+- **CORS enabled** for cross-origin requests
 
 ---
 
-## Desarrollo
+## Development
 
 ```bash
-# Modo desarrollo con nodemon
+# Development mode with nodemon
 npm run dev
 
-# Ejecutar tests (si están configurados)
+# Run tests (if configured)
 npm test
 
 # Linting
@@ -304,24 +304,24 @@ npm run lint
 
 ---
 
-## Contribuir
+## Contributing
 
-1. Fork el proyecto
-2. Crea tu rama de feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -m 'Agregar nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
-
----
-
-## Licencia
-
-MIT License - ver [LICENSE](LICENSE) para más detalles.
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature/new-feature`)
+5. Open a Pull Request
 
 ---
 
-## Autor
+## License
 
-Tu Nombre - [tu-email@example.com](mailto:tu-email@example.com)
+MIT License - see [LICENSE](LICENSE) for details.
 
-Proyecto Link: [https://github.com/tu-usuario/todo-api-express](https://github.com/tu-usuario/todo-api-express)
+---
+
+## Author
+
+Nicolás Aliaga - [nico.aliaga02@gmail.com](mailto:nico.aliaga02@gmail.com)
+
+Project Link: [https://github.com/nixixoo/ExpressSimpleAPI](https://github.com/nixixoo/ExpressSimpleAPI)
